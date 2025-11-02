@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class MeshTrail : MonoBehaviour
 {
     private InputAction SpeedUp;
+    private CharacterMove characterMove;
 
     private float meshRefreshRate = 0.1f;
     private float meshDestroyDelay = 2f;
@@ -22,15 +23,17 @@ public class MeshTrail : MonoBehaviour
     [SerializeField]private float activeTime = 2f;
     void Awake()
     {
-        SpeedUp = InputSystem.actions.FindAction("Jump");
+        SpeedUp = InputSystem.actions.FindAction("SpeedUp");
+        characterMove = GetComponentInParent<CharacterMove>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (SpeedUp.WasPressedThisFrame())
         {
             isTrailActive = true;
+            characterMove.walkSpeed = 20f;
+            characterMove.runSpeed = 30f;
             StartCoroutine(ActivateTrail(activeTime));
         }
     }
